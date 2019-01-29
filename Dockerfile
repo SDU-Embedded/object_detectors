@@ -79,4 +79,8 @@ cp -r pycocotools /jetson/models/research/
 
 RUN chmod +x /jetson/start.sh
 
+# Add files
+COPY files/mongoose_detect.py /jetson/models/research/object_detection
+COPY files/frozen_inference_graph.pb /jetson/models/research/object_detection/Mangoose_Outdoor_inference_graph/
+
 CMD ["/scripts/do_run"]
