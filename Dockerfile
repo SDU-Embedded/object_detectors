@@ -38,8 +38,8 @@ RUN pip install --user matplotlib
 
 # Object detection
 RUN cd / && \
-git clone --depth 1 https://gitlab.com/esrl/jetson
-
+#git clone --depth 1 https://gitlab.com/esrl/jetson
+git clone --depth 1 https://github.com/SDU-Embedded/jetson.git
 
 # Install protoc
 RUN cd / && ls
@@ -61,7 +61,9 @@ mkdir build && \
 cd build && \
 cmake -D WITH_LIBV4L=ON -D WITH_FFMPEG=ON WITH_GSTREAMER=ON -D ENABLE_NEON=ON WITH_OPENGL=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
 make -j2 && \
-make install
+make install && \
+rm -rf /opencv-3.4.0 && \
+rm /3.4.0.zip
 
 # Coco
 RUN cd / && \
@@ -77,4 +79,4 @@ cp -r pycocotools /jetson/models/research/
 
 RUN chmod +x /jetson/start.sh
 
-CMD ["sh", "/jetson/start.sh"]
+CMD ["/scripts/do_run"]
