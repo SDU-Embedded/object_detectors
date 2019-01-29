@@ -4,11 +4,30 @@ RUN apt-get -y update
 
 # Dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    protobuf-compiler \
-    python-pil \
-    python-lxml \
-    python-tk \
-    git
+# protobuf-compiler \
+python-pil \
+python-lxml \
+python-tk \
+wget \
+git \
+libgstreamer1.0-0 \
+gstreamer1.0-plugins-base \
+gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad \
+gstreamer1.0-plugins-ugly \
+gstreamer1.0-libav \
+gstreamer1.0-doc \
+gstreamer1.0-tools \
+libgstreamer1.0-dev \
+libgstreamer-plugins-base1.0-dev \
+build-essential \
+cmake \
+libgtk2.0-dev \
+pkg-config \
+libavcodec-dev \
+libavformat-dev \
+libswscale-dev \
+kafkacat
 
 # Libraries
 RUN pip install --upgrade pip 
@@ -19,7 +38,30 @@ RUN pip install --user matplotlib
 
 # Object detection
 RUN cd / && \
-   git clone --depth 1 https://gitlab.com/esrl/jetson 
+git clone --depth 1 https://gitlab.com/esrl/jetson
+
+
+# Install protoc
+RUN cd / && ls
+RUN echo BREAK
+RUN cd /jetson && \
+mkdir protoc/ && \
+cd /jetson/protoc/ && \
+wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.0/protoc-3.6.0-linux-x86_64.zip && \
+unzip protoc-3.6.0-linux-x86_64.zip && \
+chmod +x /jetson/protoc/bin/protoc
+
+# Install opencv
+RUN cd / && \
+wget https://github.com/opencv/opencv/archive/3.4.0.zip && \
+ls && \
+unzip 3.4.0.zip && \
+cd opencv-3.4.0 && \
+mkdir build && \
+cd build && \
+cmake -D WITH_LIBV4L=ON -D WITH_FFMPEG=ON WITH_GSTREAMER=ON -D ENABLE_NEON=ON WITH_OPENGL=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
+make -j2 && \
+make install
 
 # Coco
 RUN cd / && \
@@ -28,14 +70,11 @@ cd cocoapi/PythonAPI/ && \
 make && \
 cp -r pycocotools /jetson/models/research/
 
-# Add files
-COPY files/mongoose_detect.py /jetson/models/research/object_detection
-COPY files/frozen_inference_graph.pb /jetson/models/research/object_detection/Mangoose_Outdoor_inference_graph/
-
-
 # Protobuf compilation
-#RUN cd /models/research/ && \
-#protoc object_detection/protos/*.proto --python_out=. && \
-#export PYTHONPATH=$PYTHONPATH:/models/research:models/research/slim
+# RUN cd /jetson/models/research/ && \
+# /jetson/protoc/bin/protoc object_detection/protos/*.proto --python_out=. && \
+# export PYTHONPATH=$PYTHONPATH:/models/research:models/research/slim
 
-CMD ["python /jetson/models/research/object_detection/mongoose_detect.py"]
+RUN chmod +x /jetson/start.sh
+
+CMD ["sh", "/jetson/start.sh"]
