@@ -28,7 +28,13 @@ libavcodec-dev \
 libavformat-dev \
 libswscale-dev \
 kafkacat \
-python-gi-dev
+python-gi-dev \
+libdc1394-22-dev \
+libv4l-dev \
+v4l-utils \
+python-numpy \
+libgphoto2-dev \
+libavresample-dev
 
 
 # Libraries
@@ -62,7 +68,7 @@ unzip 3.4.0.zip && \
 cd opencv-3.4.0 && \
 mkdir build && \
 cd build && \
-cmake -D WITH_LIBV4L=ON -D WITH_FFMPEG=ON WITH_GSTREAMER=ON -D ENABLE_NEON=ON WITH_OPENGL=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
+cmake -D WITH_LIBV4L=ON -D WITH_FFMPEG=ON WITH_GSTREAMER=ON -D ENABLE_NEON=ON WITH_OPENGL=OFF -D WITH_CUDA=OFF -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
 make -j2 && \
 make install && \
 rm -rf /opencv-3.4.0 && \
