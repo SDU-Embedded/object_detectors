@@ -48,7 +48,8 @@ RUN pip install kafka-python
 # Object detection
 RUN cd / && \
 #git clone --depth 1 https://gitlab.com/esrl/jetson
-git clone --depth 1 https://github.com/SDU-Embedded/jetson.git
+#git clone --depth 1 https://github.com/SDU-Embedded/jetson.git
+git clone --depth 1 https://gitlab.esrl.dk/CentreForBioRobotics/IntelligentBioRecording/jetson.git
 
 # Install protoc
 RUN cd / && ls
