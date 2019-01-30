@@ -1,4 +1,5 @@
 export _camera_ip=ff15::b8:27:eb:dd:bd:a0
 export _iface=enp55s9
 export _weight_path='/jetson/models/research/object_detection/mongoose_outdoor_inference_graph/'
+export _topic='zoocam'
 export _entrypoint='/startup.sh'

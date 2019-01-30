@@ -27,7 +27,9 @@ pkg-config \
 libavcodec-dev \
 libavformat-dev \
 libswscale-dev \
-kafkacat
+kafkacat \
+python-gi-dev
+
 
 # Libraries
 RUN pip install --upgrade pip 
@@ -35,6 +37,7 @@ RUN pip install --user Cython
 RUN pip install --user contextlib2
 RUN pip install --user jupyter
 RUN pip install --user matplotlib
+RUN pip install kafka-python
 
 # Object detection
 RUN cd / && \
