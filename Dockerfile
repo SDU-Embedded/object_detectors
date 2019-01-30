@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow
+FROM tensorflow/tensorflow:latest-gpu
 
 RUN apt-get -y update
 
